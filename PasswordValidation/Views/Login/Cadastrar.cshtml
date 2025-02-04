@@ -1,0 +1,124 @@
+﻿<head>
+    <title>Cadastro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            text-align: left;
+            width: 100%;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+            button:hover {
+                background-color: #218838;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Cadastro de usuário</h2>
+        <label for="Usuario">Usuário:</label>
+        <input id="Usuario" />
+        <label for="Senha">Senha:</label>
+        <input id="Senha" type="password" />
+        <label for="ConfirmarSenha">Confirmar Senha:</label>
+        <input id="ConfirmarSenha" type="password" />
+        <button id="Salvar">Salvar Cadastro</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+        $("#Salvar").click(function () {
+            const usuario = $("#Usuario").val();
+            const senha = $("#Senha").val();
+            const confirmarSenha = $("#ConfirmarSenha").val();
+
+            if (!usuario || !senha || !confirmarSenha) {
+                alert("Por favor, preencha todos os campos.");
+                return;
+            }
+
+            if (senha !== confirmarSenha) {
+                alert("As senhas não coincidem.");
+                return;
+            }
+
+            $.ajax({
+                url: "../Login/VerificarUsuarioDuplicado",
+                type: "POST",
+                data: { Usuario: usuario },
+                success: function (resposta) {
+                    if (resposta.usuarioExistente) {
+                        alert("Este nome de usuário já está em uso.");
+                        return;
+                    }
+
+                    const dados = {
+                        Usuario: usuario,
+                        Senha: senha
+                    };
+
+                    $.ajax({
+                        url: "../Login/SalvarCadastro",
+                        type: "POST",
+                        data: dados,
+                        success: function (resposta) {
+                            alert("Cadastro realizado com sucesso!");
+                        },
+                        error: function (error) {
+                            alert("Erro ao realizar o cadastro. Tente novamente.");
+                        }
+                    });
+                },
+                error: function () {
+                    alert("Erro ao verificar o nome de usuário. Tente novamente.");
+                }
+            });
+        });
+    </script>
+</body>

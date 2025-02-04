@@ -1,0 +1,104 @@
+﻿<head>
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            text-align: left;
+            width: 100%;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        a {
+            color: #007BFF;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+            button:hover {
+                background-color: #218838;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <label>Usuário:</label>
+        <input type="text" id="usuario" />
+        <label>Senha:</label>
+        <input type="password" id="senha" />
+        <a href="../Login/Cadastrar">Cadastrar usuário!</a>
+        <button id="Logar">Logar</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+        $("#Logar").click(function () {
+            var dados = {
+                usuario: $("#usuario").val(),
+                senha: $("#senha").val()
+            };
+
+            $.ajax({
+                url: "../Login/Logar",
+                type: "POST",
+                data: dados,
+                success: function (resposta) {
+                    alert("Login realizado com sucesso!");
+                },
+                error: function (error) {
+                    alert("Erro ao realizar o login. Tente novamente.");
+                }
+            });
+        });
+    </script>
+</body>
